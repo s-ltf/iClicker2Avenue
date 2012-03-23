@@ -3,10 +3,23 @@ from stInfo import *
 import glob
 import re
 import time
+''' skeleton
 
+Info =  Data.getSessionInfo(session)
+
+lstAttendance = Info['macID']
+
+'''
+
+
+''' skeleton2
+
+
+lstAttendance = Info['macID']
+
+'''
 
 def findNames():
-    ''' scans for csv files containing - upload - , those will have the igrader data'''
     lst = glob.glob('./*.csv')
     
     fileList = []
@@ -43,6 +56,7 @@ def creatStudent(line,headerData):
     
 def updateStudent(line,headerData,student):
 
+    
     for i in range(len(line)):      #goes through each element in that line
         
         temp = headerData[i].split('_')
@@ -65,7 +79,7 @@ def rawData():
     
     for filename in fileList:   #goes through ALL csv files one by one and builds up classList
 
-        
+
         
         infile = open(filename, 'r')
         bigMess = infile.read().split('\n')  # has all data from csv file
@@ -82,6 +96,27 @@ def rawData():
             else:
                 classList[line[0]] = creatStudent(line,headerData)
 
+            '''extra part to fix the overlapping session data'''
+            if re.match('.*(leo|Leo|LEO).*',filename):
+                print filename
+                maxMark = 2
+                sessionEx = Session(3,12)
+
+                for i in range(len(line)):      #goes through each element in that line
+
+                    temp = headerData[i].split('_')
+                    if len(temp)==3 and temp[2][:2] == '12':        #checks if the current element is an attendance mark data,and figures out from which tutorial(session)
+                        session = Session(int(temp[0]),int(temp[1]))
+
+                        if line[i] != ' ' and line[i] != '' and session.date == sessionEx.date:
+                            mark = int(line[i])
+                            classList[line[0]].setAttMark(sessionEx,mark,True,maxMark)
+            ''' SO INEFFECIENT! '''
+            
+
+
+                
+                    
     generateAvenueCSV(classList)
     return classList
 
@@ -102,7 +137,13 @@ def findStudentsWithTotal(classList, total ):
     return lst
 
     
+def findStudentsWithMarkOnSession(classList,session,mark):
 
+    lst = []
+    for key in classList.keys():
+        if classList[key].getSingleAttMark(session) == mark:
+            lst.append(classList[key])
+    return lst
 def generateAvenueCSV(classList):
 
     
