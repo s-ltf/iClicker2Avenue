@@ -62,14 +62,24 @@ def getSessionIndex(session):#format of session must be a Session object ( sessi
 
 ##    print session.month,session.date
     for i in range(len(mondays)):
-        if session.month == mondays[i][0]:  # filters month
+        month = mondays[i][0]
+        if session.month ==  month:  # filters month
             date = mondays[i][1]
-            rangeDate = range(date,date+7)  #decides if date is within this range/session
-##            print "range",rangeDate
+
+
+            if month == 2 and session.date < 6:
+                rangeDate = [30,31,1,2,3,4,5]
+            elif month == 3 and session.date < 5:
+                rangeDate = [27,28,29,1,2,3,4]
+                    
+            else:
+                    
+                rangeDate = range(date,date+7)  #decides if date is within this range/session
+##              print "range",rangeDate
             for day in rangeDate:
                 if session.date == day:
                     return i
-    return 0
+    return None
            
         	
 class Session:

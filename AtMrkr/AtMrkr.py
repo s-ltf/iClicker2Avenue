@@ -37,6 +37,7 @@ def creatStudent(line,headerData):
 
     student = Student('Derp',line[0]) #make student object with macID info
 
+
     for i in range(len(line)):      #goes through each element in that line
         
         temp = headerData[i].split('_')
@@ -47,6 +48,7 @@ def creatStudent(line,headerData):
                 mark = int(line[i])
                 student.setAttMark(session,mark)
             
+
     return student
 
 
@@ -56,16 +58,21 @@ def creatStudent(line,headerData):
     
 def updateStudent(line,headerData,student):
 
+
     
     for i in range(len(line)):      #goes through each element in that line
         
         temp = headerData[i].split('_')
         if len(temp)==3 and temp[2][:2] == '12':        #checks if the current element is an attendance mark data,and figures out from which tutorial(session)
             session = Session(int(temp[0]),int(temp[1]))
+
+
             
             if line[i] != ' ' and line[i] != '' :
                 mark = int(line[i])
                 student.setAttMark(session,mark)
+                
+
             
 ##    return student
 
@@ -90,28 +97,32 @@ def rawData():
         for longLine in bigMess[1:]:
             line = longLine.split(',')
 
+##            ''' testing purposes '''
+##            if line[0] == '#schwem':
+##                print line
+##            ''' end testing '''
             if classList.has_key(line[0]):
                 updateStudent(line,headerData,classList[line[0]])
 
             else:
                 classList[line[0]] = creatStudent(line,headerData)
 
-            '''extra part to fix the overlapping session data'''
-            if re.match('.*(leo|Leo|LEO).*',filename):
-                print filename
-                maxMark = 2
-                sessionEx = Session(3,12)
-
-                for i in range(len(line)):      #goes through each element in that line
-
-                    temp = headerData[i].split('_')
-                    if len(temp)==3 and temp[2][:2] == '12':        #checks if the current element is an attendance mark data,and figures out from which tutorial(session)
-                        session = Session(int(temp[0]),int(temp[1]))
-
-                        if line[i] != ' ' and line[i] != '' and session.date == sessionEx.date:
-                            mark = int(line[i])
-                            classList[line[0]].setAttMark(sessionEx,mark,True,maxMark)
-            ''' SO INEFFECIENT! '''
+##            '''extra part to fix the overlapping session data'''
+##            if re.match('.*(leo|Leo|LEO).*',filename):
+##                print filename
+##                maxMark = 2
+##                sessionEx = Session(3,12)
+##
+##                for i in range(len(line)):      #goes through each element in that line
+##
+##                    temp = headerData[i].split('_')
+##                    if len(temp)==3 and temp[2][:2] == '12':        #checks if the current element is an attendance mark data,and figures out from which tutorial(session)
+##                        session = Session(int(temp[0]),int(temp[1]))
+##
+##                        if line[i] != ' ' and line[i] != '' and session.date == sessionEx.date:
+##                            mark = int(line[i])
+##                            classList[line[0]].setAttMark(sessionEx,mark,True,maxMark)
+##            ''' SO INEFFECIENT! '''
             
 
 
