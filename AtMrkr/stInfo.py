@@ -11,6 +11,9 @@ class Student:
         self.AttMark= [0]*12
 ##        self.AttMark[0] = 1 #giving everyone 1 mark ,for week 01
         self.sessionData = {}
+        self.TutSect = ""
+        self.LabSect = ""
+        self.LecSect = ""
 
     def getName(self):
         return self.name
@@ -37,8 +40,23 @@ class Student:
         return self.AttMark
 
     
+    def getTutSect(self):
+        return self.TutSect
+    def getLabSect(self):
+        return self.LabSect
+    def getLecSect(self):
+        return self.LecSect
 
+    def setTutSec(self, sect):
+        self.TutSect = sect
+        
+    def setLabSec(self, sect):
+        self.LabSect = sect
+        
+    def setLecSec(self, sect):
+        self.LecSect = sect
 
+    
     def setAttMark(self, session , mark ,exceed=False,maxMark = 1):
 
         index = getSessionIndex(session)
